@@ -20,8 +20,8 @@ public class PostController {
 
     private PostService postService;
 
-    public PostController( PostService postService){
-        this.postService=postService;
+    public PostController(PostService postService) {
+        this.postService = postService;
     }
 
 
@@ -42,9 +42,9 @@ public class PostController {
     // the user with the role ADMIN can access this. User can't access this.
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
-    public ResponseEntity<Object> createPost(@Valid @RequestBody PostDTO postDTO, BindingResult bindingResult){
+    public ResponseEntity<Object> createPost(@Valid @RequestBody PostDTO postDTO, BindingResult bindingResult) {
 
-        if (bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             return new ResponseEntity<>(bindingResult.getFieldError().getDefaultMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
@@ -94,19 +94,18 @@ public class PostController {
             @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
             @RequestParam(value = "sortBy", defaultValue = "id", required = false) String sortBy,
             @RequestParam(value = "sortDir", defaultValue = "asc", required = false) String sortDir
-    ){
+    ) {
         PostResponse postDTOList = postService.getAllPosts(pageNo, pageSize, sortBy, sortDir);
         return ResponseEntity.ok(postDTOList);
     }
 
 
-
     //Get post by id
     // http://localhost:8080/api/posts/1
     @GetMapping("/{id}")
-    public ResponseEntity<PostDTO> getPostById(@PathVariable ("id") long id){
+    public ResponseEntity<PostDTO> getPostById(@PathVariable("id") long id) {
         PostDTO postDTO = postService.getPostById(id);
-      //  return new ResponseEntity<>(postDTO,HttpStatus.OK);
+        //  return new ResponseEntity<>(postDTO,HttpStatus.OK);
         return ResponseEntity.ok(postDTO);
     }
 
@@ -116,9 +115,9 @@ public class PostController {
     // Only ADMIN can update the record not USER.
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
-    public ResponseEntity<PostDTO> updatePost(@RequestBody PostDTO postDTO, @PathVariable("id") long id){
+    public ResponseEntity<PostDTO> updatePost(@RequestBody PostDTO postDTO, @PathVariable("id") long id) {
         PostDTO postDTO1 = postService.updatePost(postDTO, id);
-       // return new ResponseEntity<>(postDTO1,HttpStatus.OK);
+        // return new ResponseEntity<>(postDTO1,HttpStatus.OK);
         return ResponseEntity.ok(postDTO1);
     }
 
@@ -129,7 +128,7 @@ public class PostController {
     // Only ADMIN can Delete the record not USER.
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deletePost(@PathVariable("id") long id){
+    public ResponseEntity<String> deletePost(@PathVariable("id") long id) {
         postService.deletePost(id);
         return ResponseEntity.ok("post entity deleted successfully");
     }
